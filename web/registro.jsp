@@ -17,27 +17,28 @@
 
         <div class="p-5 bg-white rounded shadow-lg text-center" style="max-width: 500px; width: 100%;">
                         <h2 class="fw-bold mb-3">Crear cuenta</h2>
-                <form action="RegistroServlet" method="POST ">   
-                <div class="form-floating mb-3">
-                  <label for="nombre" class="form-label">Nombre Completo</label>
-                  <input type="text" class="form-control" id="nombre" name=nombre_completo" required>
-                </div>
-                <div class="form-floating mb-3">
-                  <label for="correo" class="form-label">Correo</label>
-                  <input type="email" class="form-control" id="correo" name=correo" required>
-                </div>
-                <div class="form-floating mb-3">
-                  <label for="contrasena" class="form-label">Contrasena</label>
-                  <input type="password" class="form-control" id="contrasena" name=contrasena" required>
-                </div>
+            <form action="RegistroServlet" method="POST">
                 
-                <button type="button" class="btn btn-primary w-100 mb-3">Registrarse</button>
-                
-                </form >  
-                <p class="text-center mb-0">¿Ya tienes una cuenta? <a href="login.jsp">Inicia sesión aquí</a></p>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="nombre" name="nombre_completo" placeholder="Nombre Completo" required>
+                <label for="nombre">Nombre Completo</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="correo" name="correo" placeholder="Correo" required>
+                <label for="correo">Correo</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Contraseña" required>
+                <label for="contrasena">Contrasena</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mb-3">Registrarse</button>
+            </form>
+                        
+        <p class="text-center mb-0">¿Ya tienes una cuenta? <a href="login.jsp">Inicia sesión aquí</a></p>                       
             </div
-        </div 
-       
-                
+        </div            
     </body>
 </html>
