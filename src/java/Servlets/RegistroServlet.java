@@ -8,13 +8,14 @@ import DAO.UsuarioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
 import modelo.Usuario;
 
-
+@WebServlet("/RegistroServlet")
 public class RegistroServlet extends HttpServlet {
 
     @Override
