@@ -18,6 +18,15 @@
 
             <div class="p-5 bg-white rounded shadow-lg text-center" style="max-width: 500px; width: 100%;">
                 <h2 class="fw-bold mb-3">Login</h2>
+                
+            <% 
+            String error = (String) request.getAttribute("error");
+            if (error != null) { 
+            %>
+            <div class="alert alert-danger text-center">
+                <%= error %>
+            </div>
+            <% } %>
                 <form action="LoginServlet" method="POST">
                 <div class="form-floating mb-3">
                     <input type="email" class="form-control" id="floatingInput" name="correo" placeholder="name@example.com"required>
