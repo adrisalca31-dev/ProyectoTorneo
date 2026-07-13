@@ -4,18 +4,19 @@
  */
 package Servlets;
 
+
 import DAO.UsuarioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.Date;
 import modelo.Usuario;
 
-@WebServlet("/RegistroServlet")
+
 public class RegistroServlet extends HttpServlet {
 
     @Override
@@ -25,42 +26,42 @@ public class RegistroServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-                String nombre = request.getParameter("nombre_completo");
-        String correo = request.getParameter("correo");
-        String contrasena = request.getParameter("contrasena");
-        
-        UsuarioDAO dao = new UsuarioDAO();
-        
-        if (dao.buscarPorCorreo(correo) !=null) {
-            
+    String nombre = request.getParameter("nombre_completo");
+    String correo = request.getParameter("correo");
+    String contrasena = request.getParameter("contrasena");
+    
+    UsuarioDAO dao = new UsuarioDAO();
+    
+    if (dao.buscarPorCorreo(correo) != null) 
+        {
             request.setAttribute("error", "El correo ya se encuentra asociado a una cuenta");
-            request.getRequestDispatcher("registo.jsp").forward(request, response);
+            request.getRequestDispatcher("registro.jsp").forward(request, response);
             return;
         }
     
-    Usuario usuario = new Usuario ();
-    
+    Usuario usuario = new Usuario();
     usuario.setNombreCompleto(nombre);
     usuario.setCorreo(correo);
     usuario.setContrasena(contrasena);
     usuario.setRol("USUARIO");
     usuario.setActivo(true);
-    usuario.setFechaRegistro(new Date());
+    usuario.setFechaRegistro(new java.util.Date());
     
+
     boolean registrado = dao.registrarUsuario(usuario);
-    
+
     if (registrado) {
-        
-        response.sendRedirect("login.jsp");
- 
-    } else {
-        request.setAttribute("Error", "No se pudo registrar el usuario");
-        request.getRequestDispatcher("registro.jsp").forward(request, response);}
+        request.getSession().setAttribute("usuario", usuario);
+        response.sendRedirect("usuarioInicio.jsp?mensaje=exito");
+
+
+    } 
+    else {
+
+        request.setAttribute("error", "No se pudo registrar el usuario");
+        request.getRequestDispatcher("registro.jsp").forward(request, response);
 
     }
-
-
+}
     
-    
-
 }
