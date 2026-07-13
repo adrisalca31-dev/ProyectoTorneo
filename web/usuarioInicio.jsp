@@ -3,7 +3,6 @@
     Created on : 4 jul 2026, 21:39:31
     Author     : alexa
 --%>
-
 <%@page import="modelo.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -18,25 +17,34 @@
     <body class="bg-light d-flex flex-column min-vh-100">
         <%
             Usuario usuario = (Usuario)session.getAttribute("usuario");
+            if (usuario == null) { response.sendRedirect("login.jsp"); return; }
         %>
-        <nav class="navbar navbar-expand-lg" style="background-color: darkslategray;">
-            <div class="container">
-                <a class="navbar-brand fw-bold text-white" href="usuarioInicio.jsp">Torneo</a>
 
-                <div class="collapse navbar-collapse" id="menuUser">
-                    <span class="navbar-text ms-auto">
-                        <a class="btn btn-light btn-sm px-3" style="color: black;" href="LogoutServlet">Cerrar Sesión</a>
-                    </span>
+        <% if ("exito".equals(request.getParameter("mensaje"))) { %>
+            <div class="flex-grow-1 d-flex justify-content-center align-items-center">
+                <div class="card p-5 shadow-lg text-center" style="max-width: 400px;">
+                    <h2 class="text-success fw-bold">¡Bienvenido!</h2>
+                    <p class="text-muted">Tu cuenta ha sido creada exitosamente, <%=usuario.getNombreCompleto()%>.</p>
+                    <a href="usuarioInicio.jsp" class="btn btn-primary w-100">Continuar al Torneo</a>
                 </div>
             </div>
+        <% } else { %>
+        <nav class="navbar navbar-expand-lg" style="background-color: darkslategray;">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white" href="usuarioInicio.jsp">Torneo</a>
+            <div class="collapse navbar-collapse" id="menuUser">
+                <span class="navbar-text ms-auto">
+                    <a class="btn btn-light btn-sm px-3" style="color: black;" href="LogoutServlet">Cerrar Sesión</a>
+                </span>
+            </div>
+        </div>
         </nav>
 
-    <div class="container mt-4 flex-grow-1">
-
-        <div class="mb-4">
-            <h2 class="fw-bold text-dark">Bienvenido <%=usuario.getNombreCompleto()%></h2>
-            <p class="text-muted">Consulta aquí los resultados y el estado actual del torneo.</p>
-        </div>
+            <div class="container mt-4 flex-grow-1">
+                <div class="mb-4">
+                    <h2 class="fw-bold text-dark">Bienvenido <%=usuario.getNombreCompleto()%></h2>
+                    <p class="text-muted">Consulta aquí los resultados y el estado actual del torneo.</p>
+                </div>
 
         <div class="row">
             <div class="col-md-4 mb-3">
@@ -64,7 +72,7 @@
                     <div class="card-body">
                         <h5 class="card-title text-info fw-bold">Resultados y Marcadores</h5>
                         <p class="card-text small text-muted">Revisa los resultados finales de cada partido disputado.</p>
-                        <a href="uusuario/resultados.jsp" class="btn btn-info btn-sm text-white">Ver Resultados</a>
+                        <a href="usuario/resultados.jsp" class="btn btn-info btn-sm text-white">Ver Resultados</a>
                     </div>
                 </div>
             </div>
@@ -92,6 +100,7 @@
             </div>
         </div>
 
-    </div>
+    </div>                    
+ <% } %>                   
 </body>
 </html>
