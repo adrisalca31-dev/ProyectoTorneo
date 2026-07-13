@@ -47,7 +47,7 @@ public class LoginServlet extends HttpServlet {
         }
         
     } else {
-        request.setAttribute("Error", "Datos incorrectos, intente nuevamente");
+        request.setAttribute("error", "Datos incorrectos, intente nuevamente");
         request.getRequestDispatcher("login.jsp").forward(request, response);
         
     }    
