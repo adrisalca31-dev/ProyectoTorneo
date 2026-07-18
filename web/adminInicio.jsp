@@ -45,7 +45,7 @@
                     <div class="card-body">
                     <h5 class="card-title fw-bold">Gestión de Equipos</h5>
                     <p class="card-text opacity-75">Validación y aprobación de equipos participantes.</p>
-                    <a href="admin/aprobarEquipos.jsp" class="btn btn-light btn-sm">Ver Equipos</a>
+                    <a href="<%= request.getContextPath() %>/AprobacionEquipoServlet" class="btn btn-light btn-sm">Ver Equipos</a>
                 </div>
                 </div>
             </div>
