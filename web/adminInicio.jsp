@@ -65,7 +65,9 @@
                     <div class="card-body">
                     <h5 class="card-title fw-bold">Estado del Torneo</h5>
                     <p class="card-text opacity-75">Consulta cronogramas, rondas y detalles operativos.</p>
-                    <a href="admin/verTorneo.jsp" class="btn btn-light btn-sm">Ver Torneo</a>
+                    <a href="<%= request.getContextPath() %>/TorneoServlet?accion=listar"
+                     class="btn btn-light btn-sm"> Ver Torneo
+                    </a>
                 </div>
                 </div>
             </div>

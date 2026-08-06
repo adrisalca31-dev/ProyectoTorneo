@@ -11,15 +11,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession; 
 import java.util.List;
 import modelo.Equipo;
 import modelo.Usuario;
-
+import jakarta.servlet.annotation.WebServlet;
 /**
  *
  * @author aguer
  */
+@WebServlet("/AprobacionEquipoServlet")
 public class AprobacionEquipoServlet extends HttpServlet {
 
     /**
@@ -73,7 +74,8 @@ public class AprobacionEquipoServlet extends HttpServlet {
             dao.rechazarEquipo(idEquipo, admin.getIdUsuario());
         }
 
-        response.sendRedirect("AprobacionEquipoServlet");
+        response.sendRedirect(
+        request.getContextPath() + "/AprobacionEquipoServlet");
     }
 
 }

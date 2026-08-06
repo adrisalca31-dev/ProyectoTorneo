@@ -192,5 +192,41 @@ public class EquipoDAO {
 
         return false;
     }
+     public List<Equipo> listarEquiposAprobados() {
+
+        List<Equipo> equipos = new ArrayList<>();
+
+        String sql = "SELECT * FROM equipos WHERE estado = 'APROBADO'";
+
+        try (
+            Connection con = Conexion.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()
+        ) {
+
+            while (rs.next()) {
+
+                Equipo equipo = new Equipo();
+
+                equipo.setIdEquipo(rs.getInt("id_equipo"));
+                equipo.setNombreEquipo(rs.getString("nombre_equipo"));
+                equipo.setEscudo(rs.getString("escudo"));
+                equipo.setTelefono(rs.getString("telefono"));
+                equipo.setEstado(rs.getString("estado"));
+                equipo.setIdUsuario(rs.getInt("id_usuario"));
+                equipo.setIdAdminAprobador(rs.getInt("id_admin_aprobador"));
+                equipo.setFechaAprobacion(rs.getDate("fecha_aprobacion"));
+
+                equipos.add(equipo);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al listar los equipos");
+            e.printStackTrace();
+        }
+
+        return equipos;
+    }
+
 
 }

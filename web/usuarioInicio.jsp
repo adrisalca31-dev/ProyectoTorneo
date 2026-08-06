@@ -52,7 +52,9 @@
                     <div class="card-body">
                         <h5 class="card-title text-primary fw-bold">Equipos Participantes</h5>
                         <p class="card-text small text-muted">Consulta la lista completa de equipos inscritos y aprobados.</p>
-                        <a href="usuario/registrarEquipo.jsp" class="btn btn-primary btn-sm">Ver Equipos</a>
+                        <a href="<%= request.getContextPath() %>/usuario/registrarEquipo.jsp"
+                        class="btn btn-primary btn-sm">Ver Equipos
+                        </a>
                     </div>
                 </div>
             </div>
@@ -62,7 +64,9 @@
                     <div class="card-body">
                         <h5 class="card-title text-success fw-bold">Cuadro del Torneo</h5>
                         <p class="card-text small text-muted">Visualiza las llaves, enfrentamientos y el avance por rondas.</p>
-                        <a href="usuario/verLlaves.jsp" class="btn btn-success btn-sm">Ver Llaves</a>
+                        <a href="<%= request.getContextPath() %>/GenerarLlavesServlet?idTorneo=1&vista=usuario"
+                           class="btn btn-success btn-sm">Ver Llaves
+                        </a>
                     </div>
                 </div>
             </div>
@@ -72,7 +76,9 @@
                     <div class="card-body">
                         <h5 class="card-title text-info fw-bold">Resultados y Marcadores</h5>
                         <p class="card-text small text-muted">Revisa los resultados finales de cada partido disputado.</p>
-                        <a href="usuario/resultados.jsp" class="btn btn-info btn-sm text-white">Ver Resultados</a>
+                        <a href="<%= request.getContextPath() %>/ResultadoServlet?accion=listar&idTorneo=1&vista=usuario"
+                            class="btn btn-info btn-sm text-white">Ver Resultados
+                        </a>
                     </div>
                 </div>
             </div>
@@ -94,7 +100,9 @@
                     <div class="card-body">
                         <h5 class="card-title text-danger fw-bold">Campeón del Torneo</h5>
                         <p class="card-text small text-muted">Mira quién se coronó ganador al finalizar la competencia.</p>
-                        <a href="usuario/campeon" class="btn btn-danger btn-sm text-white">Ver Campeón</a>
+                        <a href="<%= request.getContextPath() %>/ResultadoServlet?accion=campeon&idTorneo=1&vista=usuario"
+                        class="btn btn-danger btn-sm text-white">Ver Campeón
+                        </a>
                     </div>
                 </div>
             </div>

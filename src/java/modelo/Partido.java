@@ -15,6 +15,9 @@ public class Partido {
     private Date fechaPartido;
     private String horaPartido;
     private String estado;
+    private String nombreEquipoLocal;
+private String nombreEquipoVisitante;
+private String nombreRonda;
 
     public Partido() {
     }
@@ -125,4 +128,28 @@ public class Partido {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+    
+    public String getNombreEquipoLocal() {
+    return nombreEquipoLocal;
+}
+
+public void setNombreEquipoLocal(String nombreEquipoLocal) {
+    this.nombreEquipoLocal = nombreEquipoLocal;
+}
+
+public String getNombreEquipoVisitante() {
+    return nombreEquipoVisitante;
+}
+
+public void setNombreEquipoVisitante(String nombreEquipoVisitante) {
+    this.nombreEquipoVisitante = nombreEquipoVisitante;
+}
+
+public String getNombreRonda() {
+    return nombreRonda;
+}
+
+public void setNombreRonda(String nombreRonda) {
+    this.nombreRonda = nombreRonda;
+}
 }
