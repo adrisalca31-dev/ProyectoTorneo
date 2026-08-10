@@ -4,10 +4,6 @@
         <servlet-name>EquipoServlet</servlet-name>
         <url-pattern>/EquipoServlet</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AprobacionEquipoServlet</servlet-name>
-        <url-pattern>/AprobacionEquipoServlet</url-pattern>
-    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
@@ -22,14 +18,10 @@
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>Servlets.LogoutServlet</servlet-class>
-    </servlet>
+    </servlet> 
     <servlet>
         <servlet-name>EquipoServlet</servlet-name>
         <servlet-class>Servlets.EquipoServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AprobacionEquipoServlet</servlet-name>
-        <servlet-class>Servlets.AprobacionEquipoServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
