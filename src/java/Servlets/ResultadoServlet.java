@@ -28,6 +28,7 @@ public class ResultadoServlet extends HttpServlet {
         String accion =
                 request.getParameter("accion");
 
+
         /*
          * ==========================================
          * SELECCIONAR TORNEO
@@ -46,12 +47,31 @@ public class ResultadoServlet extends HttpServlet {
                     torneos
             );
 
+            String vista =
+                    request.getParameter("vista");
+
+            /*
+             * Vista del usuario
+             */
+            if ("usuario".equals(vista)) {
+
+                request.getRequestDispatcher(
+                        "/usuario/seleccionarTorneoResultados.jsp"
+                ).forward(request, response);
+
+                return;
+            }
+
+            /*
+             * Vista del administrador
+             */
             request.getRequestDispatcher(
                     "/admin/seleccionarTorneoResultados.jsp"
             ).forward(request, response);
 
             return;
         }
+
 
         /*
          * ==========================================
@@ -70,10 +90,9 @@ public class ResultadoServlet extends HttpServlet {
             PartidoDAO partidoDAO =
                     new PartidoDAO();
 
+
             /*
              * Revisamos las rondas anteriores.
-             *
-             * Actualmente el sistema utiliza:
              *
              * Ronda 1 = Octavos
              * Ronda 2 = Cuartos
@@ -81,7 +100,7 @@ public class ResultadoServlet extends HttpServlet {
              * Ronda 4 = Final
              *
              * La generación automática de rondas
-             * se mantiene igual que antes.
+             * se mantiene igual.
              */
             for (
                     int ronda = 1;
@@ -95,10 +114,16 @@ public class ResultadoServlet extends HttpServlet {
                 );
             }
 
+
+            /*
+             * Obtener todos los partidos
+             * del torneo.
+             */
             List<Partido> partidos =
                     partidoDAO.listarPartidosPorTorneo(
                             idTorneo
                     );
+
 
             request.setAttribute(
                     "partidos",
@@ -110,8 +135,10 @@ public class ResultadoServlet extends HttpServlet {
                     idTorneo
             );
 
+
             String vista =
                     request.getParameter("vista");
+
 
             /*
              * Vista del usuario
@@ -125,6 +152,7 @@ public class ResultadoServlet extends HttpServlet {
                 return;
             }
 
+
             /*
              * Vista del administrador
              */
@@ -134,6 +162,7 @@ public class ResultadoServlet extends HttpServlet {
 
             return;
         }
+
 
         /*
          * ==========================================
@@ -155,6 +184,7 @@ public class ResultadoServlet extends HttpServlet {
             PartidoDAO partidoDAO =
                     new PartidoDAO();
 
+
             /*
              * Obtener información del torneo.
              */
@@ -162,6 +192,7 @@ public class ResultadoServlet extends HttpServlet {
                     torneoDAO.obtenerTorneoPorId(
                             idTorneo
                     );
+
 
             /*
              * Obtener todos los partidos.
@@ -171,13 +202,12 @@ public class ResultadoServlet extends HttpServlet {
                             idTorneo
                     );
 
+
             /*
              * Determinar la etapa actual.
-             *
-             * Se toma la ronda más avanzada que
-             * exista actualmente en el torneo.
              */
             int rondaActualNumero = 0;
+
 
             for (Partido partido : partidos) {
 
@@ -191,7 +221,9 @@ public class ResultadoServlet extends HttpServlet {
                 }
             }
 
+
             String rondaActual;
+
 
             switch (rondaActualNumero) {
 
@@ -202,12 +234,14 @@ public class ResultadoServlet extends HttpServlet {
 
                     break;
 
+
                 case 2:
 
                     rondaActual =
                             "Cuartos de final";
 
                     break;
+
 
                 case 3:
 
@@ -216,12 +250,14 @@ public class ResultadoServlet extends HttpServlet {
 
                     break;
 
+
                 case 4:
 
                     rondaActual =
                             "Final";
 
                     break;
+
 
                 default:
 
@@ -230,6 +266,7 @@ public class ResultadoServlet extends HttpServlet {
 
                     break;
             }
+
 
             /*
              * Enviar información al JSP.
@@ -254,6 +291,7 @@ public class ResultadoServlet extends HttpServlet {
                     idTorneo
             );
 
+
             /*
              * Mostrar página de estado.
              */
@@ -263,6 +301,7 @@ public class ResultadoServlet extends HttpServlet {
 
             return;
         }
+
 
         /*
          * ==========================================
@@ -278,13 +317,16 @@ public class ResultadoServlet extends HttpServlet {
                             )
                     );
 
+
             TorneoDAO torneoDAO =
                     new TorneoDAO();
+
 
             Equipo campeon =
                     torneoDAO.obtenerCampeon(
                             idTorneo
                     );
+
 
             request.setAttribute(
                     "campeon",
@@ -296,8 +338,10 @@ public class ResultadoServlet extends HttpServlet {
                     idTorneo
             );
 
+
             String vista =
                     request.getParameter("vista");
+
 
             /*
              * Vista del usuario.
@@ -311,6 +355,7 @@ public class ResultadoServlet extends HttpServlet {
                 return;
             }
 
+
             /*
              * Vista del administrador.
              */
@@ -320,6 +365,7 @@ public class ResultadoServlet extends HttpServlet {
 
             return;
         }
+
 
         /*
          * ==========================================
@@ -331,6 +377,7 @@ public class ResultadoServlet extends HttpServlet {
         );
     }
 
+
     @Override
     protected void doPost(
             HttpServletRequest request,
@@ -339,6 +386,7 @@ public class ResultadoServlet extends HttpServlet {
 
         String accion =
                 request.getParameter("accion");
+
 
         /*
          * ==========================================
@@ -354,12 +402,14 @@ public class ResultadoServlet extends HttpServlet {
                             )
                     );
 
+
             int idTorneo =
                     Integer.parseInt(
                             request.getParameter(
                                     "idTorneo"
                             )
                     );
+
 
             int golesLocal =
                     Integer.parseInt(
@@ -368,6 +418,7 @@ public class ResultadoServlet extends HttpServlet {
                             )
                     );
 
+
             int golesVisitante =
                     Integer.parseInt(
                             request.getParameter(
@@ -375,8 +426,10 @@ public class ResultadoServlet extends HttpServlet {
                             )
                     );
 
+
             PartidoDAO partidoDAO =
                     new PartidoDAO();
+
 
             /*
              * Guardar resultado.
@@ -387,6 +440,7 @@ public class ResultadoServlet extends HttpServlet {
                             golesLocal,
                             golesVisitante
                     );
+
 
             if (guardado) {
 
@@ -399,7 +453,9 @@ public class ResultadoServlet extends HttpServlet {
                                 idTorneo
                         );
 
+
                 int rondaActual = 0;
+
 
                 for (Partido partido : partidos) {
 
@@ -415,6 +471,7 @@ public class ResultadoServlet extends HttpServlet {
                     }
                 }
 
+
                 /*
                  * Intentar crear automáticamente
                  * la siguiente ronda.
@@ -427,16 +484,19 @@ public class ResultadoServlet extends HttpServlet {
                     );
                 }
 
+
                 /*
                  * Comprobar si ya existe campeón.
                  */
                 TorneoDAO torneoDAO =
                         new TorneoDAO();
 
+
                 Equipo campeon =
                         torneoDAO.obtenerCampeon(
                                 idTorneo
                         );
+
 
                 if (campeon != null) {
 
@@ -446,6 +506,7 @@ public class ResultadoServlet extends HttpServlet {
                     );
                 }
             }
+
 
             /*
              * Si hubo empate.
@@ -458,6 +519,7 @@ public class ResultadoServlet extends HttpServlet {
                 );
             }
 
+
             /*
              * Volver a cargar los partidos.
              */
@@ -468,10 +530,12 @@ public class ResultadoServlet extends HttpServlet {
                     )
             );
 
+
             request.setAttribute(
                     "idTorneo",
                     idTorneo
             );
+
 
             request.getRequestDispatcher(
                     "/admin/registrarResultados.jsp"
@@ -479,6 +543,7 @@ public class ResultadoServlet extends HttpServlet {
 
             return;
         }
+
 
         /*
          * ==========================================

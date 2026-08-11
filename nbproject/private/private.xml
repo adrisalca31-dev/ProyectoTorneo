@@ -13,6 +13,9 @@
             <file>file:/Users/imac/Downloads/ProyectoTorneo-main-6/src/java/Servlets/TorneoServlet.java</file>
             <file>file:/Users/imac/Downloads/ProyectoTorneo-main-6/src/java/DAO/TorneoDAO.java</file>
             <file>file:/Users/imac/Downloads/ProyectoTorneo-main-6/src/java/modelo/Torneo.java</file>
+            <file>file:/Users/imac/Downloads/ProyectoTorneo-main-6/web/admin/verLlaves.jsp</file>
+            <file>file:/Users/imac/Downloads/ProyectoTorneo-main-6/web/admin/crearTorneo.jsp</file>
+            <file>file:/Users/imac/Downloads/ProyectoTorneo-main-6/web/admin/campeon.jsp</file>
         </group>
     </open-files>
 </project-private>

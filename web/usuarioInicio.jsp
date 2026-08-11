@@ -226,10 +226,10 @@
 
                             </p>
 
-                            <a href="<%= request.getContextPath() %>/ResultadoServlet?accion=listar&idTorneo=1&vista=usuario"
+                            <a href="<%= request.getContextPath() %>/ResultadoServlet?accion=seleccionar&vista=usuario"
                                class="btn btn-info btn-sm text-white">
 
-                                Ver Resultados
+                               Ver Resultados
 
                             </a>
 
