@@ -1,11 +1,4 @@
-<%-- 
-    Document   : verLlaves
-    Created on : 5 ago 2026, 12:14:26
-    Author     : dylan
---%>
-
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="modelo.Partido" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
@@ -19,7 +12,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Llaves del torneo</title>
+    <title>Llaves del Torneo</title>
 
     <style>
 
@@ -30,163 +23,260 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #f2f4f7;
+            background: #f4f6f8;
             color: #222;
         }
 
+        /* =========================
+           BARRA SUPERIOR
+           ========================= */
+
         .barra {
-            background-color: #182433;
+            background: #172536;
             color: white;
-            padding: 18px 35px;
+
+            padding: 22px 45px;
+
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .barra h2 {
+        .barra h1 {
             margin: 0;
+            font-size: 25px;
         }
 
-        .volver {
+        .btn-volver {
             color: white;
             text-decoration: none;
-            padding: 9px 14px;
+
             border: 1px solid white;
+
+            padding: 9px 18px;
+
             border-radius: 6px;
         }
 
-        .volver:hover {
-            background-color: white;
-            color: #182433;
+        .btn-volver:hover {
+            background: white;
+            color: #172536;
         }
 
+        /* =========================
+           CONTENEDOR
+           ========================= */
+
         .contenedor {
-            width: 95%;
-            max-width: 1400px;
+            width: 96%;
+            max-width: 1700px;
+
             margin: 35px auto;
         }
 
-        h1 {
+        h2 {
             text-align: center;
-            margin-bottom: 35px;
+
+            margin-bottom: 30px;
+
+            font-size: 32px;
         }
 
-        .llaves {
+        /* =========================
+           CUADRO DE LLAVES
+           ========================= */
+
+        .cuadro {
             display: flex;
-            justify-content: center;
-            gap: 30px;
+
+            align-items: stretch;
+
+            gap: 45px;
+
             overflow-x: auto;
-            padding: 20px 10px 40px;
+
+            padding: 25px;
+
+            min-height: 650px;
         }
+
+        /* =========================
+           CADA RONDA
+           ========================= */
 
         .ronda {
-            min-width: 260px;
-        }
+            min-width: 270px;
 
-        .ronda h2 {
-            text-align: center;
-            background-color: #26384c;
-            color: white;
-            padding: 12px;
-            border-radius: 7px;
-            font-size: 18px;
-            margin-bottom: 25px;
-        }
+            flex: 1;
 
-        .partidos {
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
-            min-height: 500px;
-            gap: 25px;
         }
 
-        .partido {
-            background-color: white;
-            border-radius: 9px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.10);
-            overflow: hidden;
-            border: 1px solid #ddd;
+        .titulo-ronda {
+            background: #263b53;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 13px;
+
+            border-radius: 7px;
+
+            font-weight: bold;
+
+            margin-bottom: 25px;
+
+            box-shadow: 0 2px 6px rgba(0,0,0,.12);
         }
+
+        /* =========================
+           PARTIDOS
+           ========================= */
+
+        .partidos {
+            flex: 1;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: space-around;
+
+            gap: 20px;
+        }
+
+        /* =========================
+           PARTIDO
+           ========================= */
+
+        .partido {
+            background: white;
+
+            border-radius: 8px;
+
+            box-shadow: 0 3px 10px rgba(0,0,0,.12);
+
+            overflow: hidden;
+
+            width: 100%;
+        }
+
+        /* =========================
+           EQUIPO
+           ========================= */
 
         .equipo {
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
-            padding: 11px 14px;
-            border-bottom: 1px solid #eee;
+
+            padding: 12px 15px;
+
+            border-bottom: 1px solid #ddd;
+
             font-weight: bold;
+
+            min-height: 45px;
         }
 
-        .equipo:last-child {
+        .equipo:last-of-type {
             border-bottom: none;
         }
 
-        .nombre-equipo {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+        /* =========================
+           GANADOR
+           ========================= */
+
+        .ganador {
+            background: #e5f6eb;
+
+            color: #18733f;
         }
 
+        /* =========================
+           MARCADOR
+           ========================= */
+
         .marcador {
+            font-size: 17px;
+
             margin-left: 15px;
-            font-size: 18px;
-            min-width: 20px;
-            text-align: center;
         }
+
+        /* =========================
+           ESTADO
+           ========================= */
 
         .estado {
             text-align: center;
+
             padding: 7px;
+
             font-size: 12px;
+
             font-weight: bold;
         }
 
         .finalizado {
-            background-color: #d5f4e3;
-            color: #17653c;
+            background: #d8f3e3;
+
+            color: #18733f;
         }
 
         .pendiente {
-            background-color: #fff2c7;
-            color: #7c5d00;
+            background: #fff0c2;
+
+            color: #856404;
         }
 
-        .sin-partidos {
-            background-color: white;
-            padding: 25px;
-            border-radius: 9px;
+        /* =========================
+           SIN PARTIDOS
+           ========================= */
+
+        .vacio {
             text-align: center;
-            color: #666;
-        }
 
-        .campeon {
-            margin: 30px auto;
-            max-width: 450px;
-            background-color: #fff8d6;
-            border: 2px solid #d6b600;
+            background: white;
+
+            padding: 40px;
+
             border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
+
+            box-shadow: 0 3px 10px rgba(0,0,0,.10);
         }
 
-        @media (max-width: 800px) {
+        /* =========================
+           RESPONSIVE
+           ========================= */
+
+        @media (max-width: 900px) {
 
             .barra {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
+                padding: 18px 20px;
             }
 
-            .llaves {
-                justify-content: flex-start;
+            .barra h1 {
+                font-size: 20px;
+            }
+
+            .contenedor {
+                width: 100%;
+            }
+
+            .cuadro {
+                padding: 15px;
+
+                gap: 25px;
             }
 
             .ronda {
                 min-width: 240px;
             }
+
         }
 
     </style>
@@ -195,286 +285,289 @@
 
 <body>
 
+
+<!-- =========================
+     BARRA SUPERIOR
+     ========================= -->
+
 <div class="barra">
 
-    <h2>Sistema de torneos</h2>
+    <h1>Sistema de torneos</h1>
 
-    <a class="volver"
+    <a class="btn-volver"
        href="<%= request.getContextPath() %>/TorneoServlet?accion=listar">
+
         Volver
+
     </a>
 
 </div>
 
+
+<!-- =========================
+     CONTENIDO
+     ========================= -->
+
 <div class="contenedor">
 
-    <h1>Llaves del torneo</h1>
+    <h2>Llaves del Torneo</h2>
+
 
     <%
+
         List<Partido> partidos =
                 (List<Partido>) request.getAttribute("partidos");
 
-        List<Partido> cuartos =
-                new ArrayList<>();
-
-        List<Partido> semifinales =
-                new ArrayList<>();
-
-        List<Partido> finalPartidos =
-                new ArrayList<>();
-
-        if (partidos != null) {
-
-            for (Partido partido : partidos) {
-
-                if (partido.getIdRonda() == 2) {
-
-                    cuartos.add(partido);
-
-                } else if (partido.getIdRonda() == 3) {
-
-                    semifinales.add(partido);
-
-                } else if (partido.getIdRonda() == 4) {
-
-                    finalPartidos.add(partido);
-                }
-            }
-        }
     %>
 
 
     <%
-        if (partidos != null && !partidos.isEmpty()) {
+
+        if (partidos == null || partidos.isEmpty()) {
+
     %>
 
-        <div class="llaves">
+        <div class="vacio">
 
+            <h3>No hay partidos disponibles</h3>
 
-            <!-- CUARTOS -->
-
-            <div class="ronda">
-
-                <h2>Cuartos de final</h2>
-
-                <div class="partidos">
-
-                    <%
-                        for (Partido partido : cuartos) {
-                    %>
-
-                        <div class="partido">
-
-                            <div class="equipo">
-
-                                <span class="nombre-equipo">
-                                    <%= partido.getNombreEquipoLocal() %>
-                                </span>
-
-                                <span class="marcador">
-                                    <%= partido.getGolesLocal() %>
-                                </span>
-
-                            </div>
-
-                            <div class="equipo">
-
-                                <span class="nombre-equipo">
-                                    <%= partido.getNombreEquipoVisitante() %>
-                                </span>
-
-                                <span class="marcador">
-                                    <%= partido.getGolesVisitante() %>
-                                </span>
-
-                            </div>
-
-                            <%
-                                if ("FINALIZADO".equalsIgnoreCase(
-                                        partido.getEstado())) {
-                            %>
-
-                                <div class="estado finalizado">
-                                    FINALIZADO
-                                </div>
-
-                            <%
-                                } else {
-                            %>
-
-                                <div class="estado pendiente">
-                                    PENDIENTE
-                                </div>
-
-                            <%
-                                }
-                            %>
-
-                        </div>
-
-                    <%
-                        }
-                    %>
-
-                </div>
-
-            </div>
-
-
-            <!-- SEMIFINALES -->
-
-            <div class="ronda">
-
-                <h2>Semifinales</h2>
-
-                <div class="partidos">
-
-                    <%
-                        for (Partido partido : semifinales) {
-                    %>
-
-                        <div class="partido">
-
-                            <div class="equipo">
-
-                                <span class="nombre-equipo">
-                                    <%= partido.getNombreEquipoLocal() %>
-                                </span>
-
-                                <span class="marcador">
-                                    <%= partido.getGolesLocal() %>
-                                </span>
-
-                            </div>
-
-                            <div class="equipo">
-
-                                <span class="nombre-equipo">
-                                    <%= partido.getNombreEquipoVisitante() %>
-                                </span>
-
-                                <span class="marcador">
-                                    <%= partido.getGolesVisitante() %>
-                                </span>
-
-                            </div>
-
-                            <%
-                                if ("FINALIZADO".equalsIgnoreCase(
-                                        partido.getEstado())) {
-                            %>
-
-                                <div class="estado finalizado">
-                                    FINALIZADO
-                                </div>
-
-                            <%
-                                } else {
-                            %>
-
-                                <div class="estado pendiente">
-                                    PENDIENTE
-                                </div>
-
-                            <%
-                                }
-                            %>
-
-                        </div>
-
-                    <%
-                        }
-                    %>
-
-                </div>
-
-            </div>
-
-
-            <!-- FINAL -->
-
-            <div class="ronda">
-
-                <h2>Final</h2>
-
-                <div class="partidos">
-
-                    <%
-                        for (Partido partido : finalPartidos) {
-                    %>
-
-                        <div class="partido">
-
-                            <div class="equipo">
-
-                                <span class="nombre-equipo">
-                                    <%= partido.getNombreEquipoLocal() %>
-                                </span>
-
-                                <span class="marcador">
-                                    <%= partido.getGolesLocal() %>
-                                </span>
-
-                            </div>
-
-                            <div class="equipo">
-
-                                <span class="nombre-equipo">
-                                    <%= partido.getNombreEquipoVisitante() %>
-                                </span>
-
-                                <span class="marcador">
-                                    <%= partido.getGolesVisitante() %>
-                                </span>
-
-                            </div>
-
-                            <%
-                                if ("FINALIZADO".equalsIgnoreCase(
-                                        partido.getEstado())) {
-                            %>
-
-                                <div class="estado finalizado">
-                                    FINALIZADO
-                                </div>
-
-                            <%
-                                } else {
-                            %>
-
-                                <div class="estado pendiente">
-                                    PENDIENTE
-                                </div>
-
-                            <%
-                                }
-                            %>
-
-                        </div>
-
-                    <%
-                        }
-                    %>
-
-                </div>
-
-            </div>
+            <p>
+                Todavía no se han generado las llaves del torneo.
+            </p>
 
         </div>
 
     <%
+
         } else {
+
     %>
 
-        <div class="sin-partidos">
-            No hay llaves generadas para este torneo.
+
+        <div class="cuadro">
+
+
+            <%
+
+                /*
+                 * Nombres de las rondas.
+                 *
+                 * Ronda 1 = Octavos
+                 * Ronda 2 = Cuartos
+                 * Ronda 3 = Semifinales
+                 * Ronda 4 = Final
+                 */
+
+                String[] nombresRondas = {
+
+                    "OCTAVOS DE FINAL",
+                    "CUARTOS DE FINAL",
+                    "SEMIFINALES",
+                    "FINAL"
+
+                };
+
+
+                /*
+                 * Revisar las cuatro rondas.
+                 */
+
+                for (int numeroRonda = 1;
+                     numeroRonda <= 4;
+                     numeroRonda++) {
+
+
+                    /*
+                     * Comprobar si existen partidos
+                     * de esta ronda.
+                     */
+
+                    boolean existeRonda = false;
+
+
+                    for (Partido p : partidos) {
+
+                        if (p.getIdRonda() == numeroRonda) {
+
+                            existeRonda = true;
+
+                            break;
+
+                        }
+
+                    }
+
+
+                    /*
+                     * Si la ronda todavía no existe,
+                     * no mostramos esa columna.
+                     */
+
+                    if (!existeRonda) {
+
+                        continue;
+
+                    }
+
+            %>
+
+
+            <!-- =========================
+                 RONDA
+                 ========================= -->
+
+            <div class="ronda">
+
+
+                <div class="titulo-ronda">
+
+                    <%= nombresRondas[numeroRonda - 1] %>
+
+                </div>
+
+
+                <div class="partidos">
+
+
+                    <%
+
+                        /*
+                         * Mostrar los partidos
+                         * correspondientes a la ronda.
+                         */
+
+                        for (Partido p : partidos) {
+
+
+                            if (p.getIdRonda() != numeroRonda) {
+
+                                continue;
+
+                            }
+
+
+                            boolean localGano =
+                                    p.getIdGanador()
+                                    == p.getIdEquipoLocal();
+
+
+                            boolean visitanteGano =
+                                    p.getIdGanador()
+                                    == p.getIdEquipoVisitante();
+
+
+                            boolean finalizado =
+                                    "FINALIZADO".equalsIgnoreCase(
+                                            p.getEstado()
+                                    );
+
+                    %>
+
+
+                    <!-- =========================
+                         PARTIDO
+                         ========================= -->
+
+                    <div class="partido">
+
+
+                        <!-- EQUIPO LOCAL -->
+
+                        <div class="equipo
+                             <%= localGano
+                                    ? "ganador"
+                                    : "" %>">
+
+                            <span>
+
+                                <%= p.getNombreEquipoLocal() %>
+
+                            </span>
+
+
+                            <span class="marcador">
+
+                                <%= finalizado
+                                        ? p.getGolesLocal()
+                                        : "-" %>
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- EQUIPO VISITANTE -->
+
+                        <div class="equipo
+                             <%= visitanteGano
+                                    ? "ganador"
+                                    : "" %>">
+
+                            <span>
+
+                                <%= p.getNombreEquipoVisitante() %>
+
+                            </span>
+
+
+                            <span class="marcador">
+
+                                <%= finalizado
+                                        ? p.getGolesVisitante()
+                                        : "-" %>
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- ESTADO -->
+
+                        <div class="estado
+                             <%= finalizado
+                                    ? "finalizado"
+                                    : "pendiente" %>">
+
+                            <%= p.getEstado() %>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <%
+
+                        }
+
+                    %>
+
+
+                </div>
+
+
+            </div>
+
+
+            <%
+
+                }
+
+            %>
+
+
         </div>
 
+
     <%
+
         }
+
     %>
+
 
 </div>
+
 
 </body>
 

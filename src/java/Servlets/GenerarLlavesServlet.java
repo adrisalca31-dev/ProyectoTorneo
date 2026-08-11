@@ -10,32 +10,68 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import modelo.Equipo;
+import modelo.Torneo;
 
 @WebServlet("/GenerarLlavesServlet")
 public class GenerarLlavesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
+                          HttpServletResponse response)
             throws ServletException, IOException {
+
+        TorneoDAO torneoDAO = new TorneoDAO();
 
         String parametro =
                 request.getParameter("idTorneo");
 
+        String vista =
+                request.getParameter("vista");
+
+        /*
+         * =====================================================
+         * PRIMERA ENTRADA
+         * =====================================================
+         *
+         * Si todavía no recibimos un torneo,
+         * mostramos la lista de torneos.
+         */
+
         if (parametro == null || parametro.isEmpty()) {
 
-            response.getWriter().println(
-                    "No se recibió el ID del torneo."
+            request.setAttribute(
+                    "torneos",
+                    torneoDAO.listarTorneos()
             );
+
+            if ("usuario".equals(vista)) {
+
+                request.getRequestDispatcher(
+                        "/usuario/verLlaves.jsp"
+                ).forward(request, response);
+
+                return;
+            }
+
+            request.getRequestDispatcher(
+                    "/admin/verLlaves.jsp"
+            ).forward(request, response);
 
             return;
         }
 
+        /*
+         * =====================================================
+         * TORNEO SELECCIONADO
+         * =====================================================
+         */
+
         int idTorneo =
                 Integer.parseInt(parametro);
 
-        TorneoDAO torneoDAO =
-                new TorneoDAO();
+        /*
+         * Obtener equipos del torneo.
+         */
 
         List<Equipo> equipos =
                 torneoDAO.obtenerEquiposDelTorneo(
@@ -45,6 +81,7 @@ public class GenerarLlavesServlet extends HttpServlet {
         /*
          * Validar cantidad mínima.
          */
+
         if (equipos.size() < 2) {
 
             request.setAttribute(
@@ -57,17 +94,28 @@ public class GenerarLlavesServlet extends HttpServlet {
                     torneoDAO.listarTorneos()
             );
 
+            if ("usuario".equals(vista)) {
+
+                request.getRequestDispatcher(
+                        "/usuario/verLlaves.jsp"
+                ).forward(request, response);
+
+                return;
+            }
+
             request.getRequestDispatcher(
-                    "/admin/verTorneo.jsp"
+                    "/admin/verLlaves.jsp"
             ).forward(request, response);
 
             return;
         }
 
         /*
-         * Para un torneo eliminatorio necesitamos
-         * una cantidad par de equipos.
+         * =====================================================
+         * VALIDAR CANTIDAD PAR
+         * =====================================================
          */
+
         if (equipos.size() % 2 != 0) {
 
             request.setAttribute(
@@ -80,8 +128,17 @@ public class GenerarLlavesServlet extends HttpServlet {
                     torneoDAO.listarTorneos()
             );
 
+            if ("usuario".equals(vista)) {
+
+                request.getRequestDispatcher(
+                        "/usuario/verLlaves.jsp"
+                ).forward(request, response);
+
+                return;
+            }
+
             request.getRequestDispatcher(
-                    "/admin/verTorneo.jsp"
+                    "/admin/verLlaves.jsp"
             ).forward(request, response);
 
             return;
@@ -91,9 +148,14 @@ public class GenerarLlavesServlet extends HttpServlet {
                 new PartidoDAO();
 
         /*
-         * Crear la primera ronda solamente si todavía
-         * no existen partidos.
+         * =====================================================
+         * CREAR PRIMERA RONDA
+         * =====================================================
+         *
+         * Solamente se crean partidos si el torneo
+         * todavía no tiene ninguno.
          */
+
         if (!partidoDAO.existenPartidos(idTorneo)) {
 
             int idRonda =
@@ -121,8 +183,11 @@ public class GenerarLlavesServlet extends HttpServlet {
         }
 
         /*
-         * Obtener todos los partidos del torneo.
+         * =====================================================
+         * CARGAR PARTIDOS
+         * =====================================================
          */
+
         request.setAttribute(
                 "partidos",
                 partidoDAO.listarPartidosPorTorneo(
@@ -136,11 +201,21 @@ public class GenerarLlavesServlet extends HttpServlet {
         );
 
         /*
-         * Determinar si la vista es de usuario
-         * o de administrador.
+         * También enviamos la lista de torneos
+         * para que el usuario pueda cambiar de torneo
+         * sin regresar al menú.
          */
-        String vista =
-                request.getParameter("vista");
+
+        request.setAttribute(
+                "torneos",
+                torneoDAO.listarTorneos()
+        );
+
+        /*
+         * =====================================================
+         * VISTA USUARIO
+         * =====================================================
+         */
 
         if ("usuario".equals(vista)) {
 
@@ -152,14 +227,22 @@ public class GenerarLlavesServlet extends HttpServlet {
         }
 
         /*
-         * ÚNICO forward para administrador.
+         * =====================================================
+         * VISTA ADMINISTRADOR
+         * =====================================================
          */
+
         request.getRequestDispatcher(
                 "/admin/verLlaves.jsp"
         ).forward(request, response);
-
-        return;
     }
+
+
+    /*
+     * =========================================================
+     * DETERMINAR RONDA INICIAL
+     * =========================================================
+     */
 
     private int obtenerRondaInicial(
             int cantidadEquipos) {

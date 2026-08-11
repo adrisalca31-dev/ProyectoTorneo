@@ -2,13 +2,16 @@ package Servlets;
 
 import DAO.PartidoDAO;
 import DAO.TorneoDAO;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.List;
+
 import modelo.Equipo;
 import modelo.Partido;
 import modelo.Torneo;
@@ -17,18 +20,23 @@ import modelo.Torneo;
 public class ResultadoServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws ServletException, IOException {
 
-        String accion = request.getParameter("accion");
+        String accion =
+                request.getParameter("accion");
 
         /*
-         * Seleccionar torneo
+         * ==========================================
+         * SELECCIONAR TORNEO
+         * ==========================================
          */
         if ("seleccionar".equals(accion)) {
 
-            TorneoDAO torneoDAO = new TorneoDAO();
+            TorneoDAO torneoDAO =
+                    new TorneoDAO();
 
             List<Torneo> torneos =
                     torneoDAO.listarTorneos();
@@ -46,40 +54,40 @@ public class ResultadoServlet extends HttpServlet {
         }
 
         /*
-         * Listar partidos de un torneo
+         * ==========================================
+         * LISTAR PARTIDOS
+         * ==========================================
          */
         if ("listar".equals(accion)) {
 
-            int idTorneo = Integer.parseInt(
-                    request.getParameter("idTorneo")
-            );
+            int idTorneo =
+                    Integer.parseInt(
+                            request.getParameter(
+                                    "idTorneo"
+                            )
+                    );
 
             PartidoDAO partidoDAO =
                     new PartidoDAO();
 
             /*
-             * IMPORTANTE:
-             *
              * Revisamos las rondas anteriores.
              *
-             * Esto permite recuperar un torneo cuyos
-             * partidos ya fueron finalizados antes de
-             * tener activado el avance automático.
+             * Actualmente el sistema utiliza:
              *
-             * Para 16 equipos:
              * Ronda 1 = Octavos
              * Ronda 2 = Cuartos
              * Ronda 3 = Semifinal
              * Ronda 4 = Final
              *
-             * Para 8 equipos comienza en ronda 2.
-             * Para 4 equipos comienza en ronda 3.
-             *
-             * Si la ronda está completa, el DAO crea
-             * automáticamente la siguiente.
+             * La generación automática de rondas
+             * se mantiene igual que antes.
              */
-
-            for (int ronda = 1; ronda <= 3; ronda++) {
+            for (
+                    int ronda = 1;
+                    ronda <= 3;
+                    ronda++
+            ) {
 
                 partidoDAO.crearSiguienteRonda(
                         idTorneo,
@@ -87,11 +95,14 @@ public class ResultadoServlet extends HttpServlet {
                 );
             }
 
-            request.setAttribute(
-                    "partidos",
+            List<Partido> partidos =
                     partidoDAO.listarPartidosPorTorneo(
                             idTorneo
-                    )
+                    );
+
+            request.setAttribute(
+                    "partidos",
+                    partidos
             );
 
             request.setAttribute(
@@ -102,6 +113,9 @@ public class ResultadoServlet extends HttpServlet {
             String vista =
                     request.getParameter("vista");
 
+            /*
+             * Vista del usuario
+             */
             if ("usuario".equals(vista)) {
 
                 request.getRequestDispatcher(
@@ -111,6 +125,9 @@ public class ResultadoServlet extends HttpServlet {
                 return;
             }
 
+            /*
+             * Vista del administrador
+             */
             request.getRequestDispatcher(
                     "/admin/registrarResultados.jsp"
             ).forward(request, response);
@@ -119,20 +136,159 @@ public class ResultadoServlet extends HttpServlet {
         }
 
         /*
-         * Mostrar campeón
+         * ==========================================
+         * MOSTRAR ESTADO ACTUAL DEL TORNEO
+         * ==========================================
          */
-        if ("campeon".equals(accion)) {
+        if ("estado".equals(accion)) {
 
-            int idTorneo = Integer.parseInt(
-                    request.getParameter("idTorneo")
-            );
+            int idTorneo =
+                    Integer.parseInt(
+                            request.getParameter(
+                                    "idTorneo"
+                            )
+                    );
 
             TorneoDAO torneoDAO =
                     new TorneoDAO();
 
+            PartidoDAO partidoDAO =
+                    new PartidoDAO();
+
+            /*
+             * Obtener información del torneo.
+             */
+            Torneo torneo =
+                    torneoDAO.obtenerTorneoPorId(
+                            idTorneo
+                    );
+
+            /*
+             * Obtener todos los partidos.
+             */
+            List<Partido> partidos =
+                    partidoDAO.listarPartidosPorTorneo(
+                            idTorneo
+                    );
+
+            /*
+             * Determinar la etapa actual.
+             *
+             * Se toma la ronda más avanzada que
+             * exista actualmente en el torneo.
+             */
+            int rondaActualNumero = 0;
+
+            for (Partido partido : partidos) {
+
+                if (
+                        partido.getIdRonda()
+                        > rondaActualNumero
+                ) {
+
+                    rondaActualNumero =
+                            partido.getIdRonda();
+                }
+            }
+
+            String rondaActual;
+
+            switch (rondaActualNumero) {
+
+                case 1:
+
+                    rondaActual =
+                            "Octavos de final";
+
+                    break;
+
+                case 2:
+
+                    rondaActual =
+                            "Cuartos de final";
+
+                    break;
+
+                case 3:
+
+                    rondaActual =
+                            "Semifinal";
+
+                    break;
+
+                case 4:
+
+                    rondaActual =
+                            "Final";
+
+                    break;
+
+                default:
+
+                    rondaActual =
+                            "Sin iniciar";
+
+                    break;
+            }
+
+            /*
+             * Enviar información al JSP.
+             */
+            request.setAttribute(
+                    "torneo",
+                    torneo
+            );
+
+            request.setAttribute(
+                    "rondaActual",
+                    rondaActual
+            );
+
+            request.setAttribute(
+                    "partidos",
+                    partidos
+            );
+
+            request.setAttribute(
+                    "idTorneo",
+                    idTorneo
+            );
+
+            /*
+             * Mostrar página de estado.
+             */
+            request.getRequestDispatcher(
+                    "/usuario/estadoTorneo.jsp"
+            ).forward(request, response);
+
+            return;
+        }
+
+        /*
+         * ==========================================
+         * MOSTRAR CAMPEÓN
+         * ==========================================
+         */
+        if ("campeon".equals(accion)) {
+
+            int idTorneo =
+                    Integer.parseInt(
+                            request.getParameter(
+                                    "idTorneo"
+                            )
+                    );
+
+            TorneoDAO torneoDAO =
+                    new TorneoDAO();
+
+            Equipo campeon =
+                    torneoDAO.obtenerCampeon(
+                            idTorneo
+                    );
+
             request.setAttribute(
                     "campeon",
-                    torneoDAO.obtenerCampeon(idTorneo)
+                    campeon
             );
 
             request.setAttribute(
@@ -143,6 +299,9 @@ public class ResultadoServlet extends HttpServlet {
             String vista =
                     request.getParameter("vista");
 
+            /*
+             * Vista del usuario.
+             */
             if ("usuario".equals(vista)) {
 
                 request.getRequestDispatcher(
@@ -152,6 +311,9 @@ public class ResultadoServlet extends HttpServlet {
                 return;
             }
 
+            /*
+             * Vista del administrador.
+             */
             request.getRequestDispatcher(
                     "/admin/campeon.jsp"
             ).forward(request, response);
@@ -159,45 +321,65 @@ public class ResultadoServlet extends HttpServlet {
             return;
         }
 
+        /*
+         * ==========================================
+         * ACCIÓN NO RECONOCIDA
+         * ==========================================
+         */
         response.getWriter().println(
                 "Acción no reconocida: " + accion
         );
     }
 
     @Override
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws ServletException, IOException {
 
         String accion =
                 request.getParameter("accion");
 
         /*
-         * Registrar resultado
+         * ==========================================
+         * REGISTRAR RESULTADO
+         * ==========================================
          */
         if ("registrar".equals(accion)) {
 
-            int idPartido = Integer.parseInt(
-                    request.getParameter("idPartido")
-            );
+            int idPartido =
+                    Integer.parseInt(
+                            request.getParameter(
+                                    "idPartido"
+                            )
+                    );
 
-            int idTorneo = Integer.parseInt(
-                    request.getParameter("idTorneo")
-            );
+            int idTorneo =
+                    Integer.parseInt(
+                            request.getParameter(
+                                    "idTorneo"
+                            )
+                    );
 
-            int golesLocal = Integer.parseInt(
-                    request.getParameter("golesLocal")
-            );
+            int golesLocal =
+                    Integer.parseInt(
+                            request.getParameter(
+                                    "golesLocal"
+                            )
+                    );
 
-            int golesVisitante = Integer.parseInt(
-                    request.getParameter("golesVisitante")
-            );
+            int golesVisitante =
+                    Integer.parseInt(
+                            request.getParameter(
+                                    "golesVisitante"
+                            )
+                    );
 
             PartidoDAO partidoDAO =
                     new PartidoDAO();
 
             /*
-             * Guardamos el resultado.
+             * Guardar resultado.
              */
             boolean guardado =
                     partidoDAO.registrarResultado(
@@ -209,9 +391,8 @@ public class ResultadoServlet extends HttpServlet {
             if (guardado) {
 
                 /*
-                 * Buscamos el partido que acabamos
-                 * de finalizar para saber en qué ronda
-                 * estaba.
+                 * Buscar el partido que acabamos
+                 * de finalizar.
                  */
                 List<Partido> partidos =
                         partidoDAO.listarPartidosPorTorneo(
@@ -222,8 +403,10 @@ public class ResultadoServlet extends HttpServlet {
 
                 for (Partido partido : partidos) {
 
-                    if (partido.getIdPartido()
-                            == idPartido) {
+                    if (
+                            partido.getIdPartido()
+                            == idPartido
+                    ) {
 
                         rondaActual =
                                 partido.getIdRonda();
@@ -233,15 +416,8 @@ public class ResultadoServlet extends HttpServlet {
                 }
 
                 /*
-                 * Si encontramos la ronda, intentamos
-                 * crear automáticamente la siguiente.
-                 *
-                 * Si todavía faltan partidos por jugar,
-                 * no se crea nada.
-                 *
-                 * Cuando sea el último partido de la ronda,
-                 * se crearán automáticamente los partidos
-                 * de la siguiente ronda.
+                 * Intentar crear automáticamente
+                 * la siguiente ronda.
                  */
                 if (rondaActual > 0) {
 
@@ -252,7 +428,7 @@ public class ResultadoServlet extends HttpServlet {
                 }
 
                 /*
-                 * Comprobamos si ya existe campeón.
+                 * Comprobar si ya existe campeón.
                  */
                 TorneoDAO torneoDAO =
                         new TorneoDAO();
@@ -272,7 +448,7 @@ public class ResultadoServlet extends HttpServlet {
             }
 
             /*
-             * Si hubo empate, mostramos el mensaje.
+             * Si hubo empate.
              */
             if (!guardado) {
 
@@ -283,7 +459,7 @@ public class ResultadoServlet extends HttpServlet {
             }
 
             /*
-             * Volvemos a cargar los partidos.
+             * Volver a cargar los partidos.
              */
             request.setAttribute(
                     "partidos",
@@ -304,8 +480,14 @@ public class ResultadoServlet extends HttpServlet {
             return;
         }
 
+        /*
+         * ==========================================
+         * ACCIÓN POST NO RECONOCIDA
+         * ==========================================
+         */
         response.getWriter().println(
-                "Acción POST no reconocida: " + accion
+                "Acción POST no reconocida: "
+                + accion
         );
     }
 }

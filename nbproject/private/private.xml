@@ -10,6 +10,9 @@
             <file>file:/Users/imac/Downloads/ProyectoTorneo-main-6/src/java/DAO/PartidoDAO.java</file>
             <file>file:/Users/imac/Downloads/ProyectoTorneo-main-6/src/java/Servlets/GenerarLlavesServlet.java</file>
             <file>file:/Users/imac/Downloads/ProyectoTorneo-main-6/web/usuario/verLlaves.jsp</file>
+            <file>file:/Users/imac/Downloads/ProyectoTorneo-main-6/src/java/Servlets/TorneoServlet.java</file>
+            <file>file:/Users/imac/Downloads/ProyectoTorneo-main-6/src/java/DAO/TorneoDAO.java</file>
+            <file>file:/Users/imac/Downloads/ProyectoTorneo-main-6/src/java/modelo/Torneo.java</file>
         </group>
     </open-files>
 </project-private>
